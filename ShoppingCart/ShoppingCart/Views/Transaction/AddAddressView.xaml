@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
+             xmlns:control="clr-namespace:habahabamall.Controls" 
+             xmlns:Buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:converter="clr-namespace:habahabamall.Converters" 
+             xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:ListView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms" 
+             xmlns:viewModel="clr-namespace:habahabamall.ViewModels.Transaction" 
+             xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             xmlns:countryoption="clr-namespace:habahabamall.ViewModels.Transaction"
+             ios:Page.UseSafeArea="true"
+             Title="manage your delivery address"
+             x:Class="habahabamall.Views.Transaction.AddAddressView"
+             BackgroundColor="{DynamicResource Gray-200}">
+
+    <!--Static resources section-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="NewStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <!--Adddress content section-->
+    <ContentPage.Content>
+        <ScrollView HorizontalOptions="Center">
+            <ScrollView.VerticalOptions>
+                <OnIdiom
+                    x:TypeArguments="LayoutOptions"
+                    Default="CenterAndExpand"
+                    Phone="FillAndExpand" />
+            </ScrollView.VerticalOptions>
+
+            <!--Map to data source-->
+            <StackLayout                
+                Margin="{core:OnPlatformOrientationThickness PhonePortrait='20,32',
+                                                             PhoneLandscape='150,32',
+                                                             TabletPortrait='200,50',
+                                                             TabletLandscape='300,50',
+                                                             Desktop='30'}"
+                Spacing="0"
+                VerticalOptions="FillAndExpand"
+                WidthRequest="{OnPlatform Default='-1',
+                                          UWP='350'}">
+                <StackLayout>
+
+                    
+
+                            <!--page brief description-->
+                            <Label
+                 FontFamily="{StaticResource Montserrat-Medium}"
+                 HorizontalTextAlignment="Center"
+                  Style="{StaticResource LabelStyle}"
+                Text="Will send your order to this address"
+                TextColor="{DynamicResource Gray-800}"/>
+
+                            <!--Get firstname-->
+                            <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference firstnamef}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                                <control:BorderlessEntry
+                    x:Name="firstnamef"
+                    Placeholder="first name"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding FirstName}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                            </border:SfBorder>
+
+                            <!--Get lastname-->
+                            <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference lastnamef}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                                <control:BorderlessEntry
+                    x:Name="lastnamef"
+                    Placeholder="last name"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding LastName}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                            </border:SfBorder>
+
+                            <!--Get phone-->
+                            <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference mobilenumber}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                                <control:BorderlessEntry
+                    x:Name="mobilenumber"
+                    Placeholder="phone number"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding Phone}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                            </border:SfBorder>
+
+                            
+                 
+
+                            <!--Get Country-->
+                    <Label
+                        Text="select your country"
+                        Style="{StaticResource LabelStyle}"
+                        TextColor="{StaticResource Gray-Black}">
+                        
+                    </Label>
+                    <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference country}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}">
+                        <combobox:SfComboBox
+                            x:Name="country"
+                            MultiSelectMode="None"
+                            IsEditableMode="True"
+                            AllowFiltering="True"
+                            ComboBoxMode="SuggestAppend"
+                            HeightRequest="40"
+                            MaximumDropDownHeight="200"
+                            Style="{StaticResource ComboBoxStyle}"
+                            DataSource="{Binding CountryList}"
+                            DisplayMemberPath="Country"
+                            Watermark="select a country"
+                            SelectedDropDownItemColor="DarkBlue"
+                            IsSelectedItemsVisibleInDropDown="False"
+                            SelectedItem="{Binding SelectedID,Mode=TwoWay}"
+                            TextColor="{DynamicResource Gray-900}">
+                           
+                        </combobox:SfComboBox>
+                    </border:SfBorder>
+
+                    <!--Get province-->
+                    <Label
+                        Text="select your State/province"
+                        Style="{StaticResource LabelStyle}"
+                        TextColor="{StaticResource Gray-Black}">
+
+                    </Label>
+                    <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference province}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}">
+                        <combobox:SfComboBox
+                            x:Name="province"
+                            MultiSelectMode="None"
+                            IsEditableMode="True"
+                            AllowFiltering="True"
+                            ComboBoxMode="SuggestAppend"
+                            HeightRequest="40"
+                            MaximumDropDownHeight="200"
+                            Style="{StaticResource ComboBoxStyle}"
+                            DataSource="{Binding ProvinceList}"
+                            DisplayMemberPath="Province"
+                            Watermark="select a state"
+                            SelectedDropDownItemColor="DarkBlue"
+                            IsSelectedItemsVisibleInDropDown="False"
+                            SelectedItem="{Binding ProvinceID,Mode=TwoWay}"
+                            TextColor="{DynamicResource Gray-900}">
+
+                        </combobox:SfComboBox>
+                    </border:SfBorder>
+
+                    <!--Get County-->
+                            <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference countyf}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                                <control:BorderlessEntry
+                    x:Name="countyf"
+                    Placeholder="county"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding County}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                            </border:SfBorder>
+
+                            <!--Get City-->
+                            <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference cityf}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                                <control:BorderlessEntry
+                    x:Name="cityf"
+                    Placeholder="city"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding City}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                            </border:SfBorder>
+
+                    <!--Get Postal code-->
+                    <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference postalcodef}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                        <control:BorderlessEntry
+                    x:Name="postalcodef"
+                    Placeholder="postal code"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding PCode}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                    </border:SfBorder>
+
+                    <!--Get address-->
+                    <border:SfBorder
+                        BackgroundColor="{DynamicResource Gray-White}"
+                        BorderColor="{Binding Source={x:Reference addressf}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                        Style="{StaticResource SfBorderStyle}">
+                        <control:BorderlessEntry
+                    x:Name="addressf"
+                    Placeholder="home/office address details"
+                    PlaceholderColor="{DynamicResource Gray-700}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding Address}"
+                    TextColor="{DynamicResource Gray-900}"
+                    />
+                    </border:SfBorder>
+
+                    <!--Add address button-->
+                            <Buttons:SfButton 
+                Command="{Binding AddaddressDetails}"
+                CornerRadius="20"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                Style="{StaticResource SfButtonStyle}"
+                Text="Add-Address"/>
+
+                        </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

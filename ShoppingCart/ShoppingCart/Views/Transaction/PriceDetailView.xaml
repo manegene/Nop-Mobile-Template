@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView
+    x:Class="habahabamall.Views.Transaction.PriceDetailView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms" 
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms" 
+    xmlns:control="clr-namespace:habahabamall.Controls" 
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
+    xmlns:converter="clr-namespace:habahabamall.Converters" 
+    xmlns:localpop="clr-namespace:habahabamall.Views.Transaction"
+    x:Name="This">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+
+    <StackLayout>
+        <Grid
+            BackgroundColor="{DynamicResource Gray-White}"
+            RowSpacing="4"
+            VerticalOptions="Start">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            
+
+                            <!--  Header  -->
+            <Label
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="16,16,16,12"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                FontSize="16"
+                LineHeight="{OnPlatform Android=1.25,
+                                        Default=-1}"
+                Text="Price Details"
+                TextColor="{DynamicResource Gray-900}" />
+            <!--  Separator  -->
+
+        
+
+            <BoxView
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Style="{StaticResource BoxViewStyle}" />
+            <!--  Total original price MRP  -->
+            <Label
+                Grid.Row="2"
+                Margin="16,4,16,0"
+                FontFamily="{StaticResource Montserrat-Medium}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Total MRP" />
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="16,4,16,0"
+                FontFamily="{StaticResource Montserrat-Medium}"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource PriceLabelStyle}"
+                 >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding  StoreCurrency }"  />
+                        <Span Text="{Binding  TotalPrice, StringFormat=' {0:0 }'}" />
+                    </FormattedString>
+                </Label.FormattedText>
+
+            </Label>
+            <!--  Discount Percent  -->
+            <Label
+                Grid.Row="3"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Discount" />
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="{Binding DiscountPercent, StringFormat='{}{0}%'}" />
+            <!--  Coupon Discount  -->
+            <Label
+                Grid.Row="4"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                HorizontalOptions="StartAndExpand"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Coupon Discount" />
+            <buttons:SfButton
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="4,0"
+                BackgroundColor="Transparent"
+                Command="{Binding ApplyCouponCommand}"
+                CornerRadius="4"
+                HorizontalOptions="End"
+                WidthRequest="110">
+                <buttons:SfButton.Content>
+                    <Label
+                        Margin="0"
+                        FontFamily="{StaticResource Montserrat-SemiBold}"
+                        FontSize="12"
+                        HorizontalOptions="Fill"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PriceLabelStyle}"
+                        Text="Apply Coupon"
+                        TextColor="{DynamicResource HyperLink}" />
+                </buttons:SfButton.Content>
+            </buttons:SfButton>
+            <!--  Delivery Charges  -->
+            <Label
+                Grid.Row="5"
+                Margin="16,0,16,4"
+                FontFamily="{StaticResource Montserrat-Medium}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Delivery Charges" />
+            <Label
+                Grid.Row="5"
+                Grid.Column="1"
+                Margin="16,0,16,4"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource PriceLabelStyle}"
+                TextColor="{DynamicResource Green}" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding  StoreCurrency }"  />
+                        <Span Text="250" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <!--  Separator  -->
+            <BoxView
+                Grid.Row="6"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Style="{StaticResource BoxViewStyle}" />
+            <!--  Total discounted price  -->
+            <Label
+                Grid.Row="7"
+                Margin="16,12,16,16"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                FontSize="16"
+                LineHeight="{OnPlatform Android=1.25,
+                                        Default=-1}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Total"
+                TextColor="{DynamicResource Gray-900}" />
+            <Label
+                Grid.Row="7"
+                Grid.Column="1"
+                Margin="16,12,16,16"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                FontSize="16"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                LineHeight="{OnPlatform Android=1.25,
+                                        Default=-1}"
+                Style="{StaticResource PriceLabelStyle}"
+                TextColor="{DynamicResource Gray-900}" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding  StoreCurrency }"  />
+                        <Span Text="{Binding  DiscountPrice, StringFormat=' {0:0 }'}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+
+
+        </Grid>
+
+        <!--  Place order button  -->
+        <buttons:SfButton
+            Margin="{OnIdiom Default=24,
+                             Tablet='24,24,16,24'}"
+            BorderWidth="0"
+            Command="{Binding PlaceOrderCommand}"
+            CornerRadius="20"
+            FontFamily="{StaticResource Montserrat-SemiBold}"
+            HeightRequest="40"
+            HorizontalOptions="{OnIdiom Default=FillAndExpand,
+                                        Phone=CenterAndExpand,
+                                        Tablet=End}"
+            Style="{StaticResource MagentaButtonStyle}"
+            Text="{Binding ActionText, Source={x:Reference This}}"
+            WidthRequest="{OnIdiom Tablet=240,
+                                   Phone=240,
+                                   Default=-1}" />
+        <busyindicator:SfBusyIndicator
+                x:Name="busyindicator"
+                AnimationType="SlicedCircle"
+            IsVisible="{Binding IsBusy}"
+                IsBusy="{Binding IsBusy}"
+                InputTransparent="False"
+                TextColor="{DynamicResource PrimaryColor}"
+                ViewBoxHeight="50"
+                ViewBoxWidth="50" />
+
+    </StackLayout>
+
+</ContentView>

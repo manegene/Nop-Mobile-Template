@@ -1,0 +1,208 @@
+﻿using AutoMapper;
+using habahabamall.Models;
+using Newtonsoft.Json;
+using ShoppingApp.Entities;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms.Internals;
+
+namespace habahabamall.DataService
+{
+    /// <summary>
+    /// Data service to load the data from database using web API.
+    /// </summary>
+    [Preserve(AllMembers = true)]
+    public class CartDataService : ICartDataService
+    {
+
+        private readonly HttpClient httpClient;
+
+        /// <summary>
+        /// Creates an instance for the <see cref="CartDataService" /> class.
+        /// </summary>
+        public CartDataService()
+        {
+            httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders
+                            .Accept
+                            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", App.AccessToken);
+        }
+
+        /// <summary>
+        /// To add the cart item.
+        /// </summary>
+        public async Task<Status> AddCartOrFavItemAsync(int userId, int productId, string attributes, bool isfavorite, int carttype)
+        {
+            Status status = new Status();
+            var usercartobject = new
+            {
+                userid = userId,
+                productId = productId,
+                carttype = carttype,
+                isfavorite = isfavorite,
+                attributesXML = attributes
+
+
+            };
+
+            try
+            {
+                UriBuilder uri = new UriBuilder($"{App.BaseUri}cart/addtocart");
+                string content = JsonConvert.SerializeObject(usercartobject);
+                StringContent usercontent = new StringContent(content, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), usercontent);
+                if (response != null && response.IsSuccessStatusCode)
+                {
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    if (result != null)
+                    {
+                        status = JsonConvert.DeserializeObject<Status>(result);
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                status.Success = false;
+                status.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                status.Success = false;
+                status.Message = ex.Message;
+            }
+
+            return status;
+        }
+
+        //Add orderitem to database
+        public async Task<Status> AddOrderedItemAsync(int userId, string addressId, string paymentmode)
+        {
+            Status status = new Status();
+            try
+            {
+                if (userId > 0 && !string.IsNullOrEmpty(paymentmode) && !string.IsNullOrEmpty(addressId))
+                {
+                    var orderobj = new
+                    {
+                        userId = userId,
+                        addressId = addressId,
+                        paymentmode = paymentmode,
+
+                    };
+                    string serialobj = JsonConvert.SerializeObject(orderobj);
+                    StringContent serialobjstrin = new StringContent(serialobj, Encoding.UTF8, "application/json");
+                    UriBuilder uri = new UriBuilder($"{App.BaseUri}checkout/placeorder");
+                    HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), serialobjstrin);
+                    if (response != null && response.IsSuccessStatusCode)
+                    {
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        if (result != null)
+                        {
+                            status = JsonConvert.DeserializeObject<Status>(result);
+                        }
+                    }
+                    status.Success = false;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                status.Success = false;
+                status.Message = ex.Message;
+            }
+            return status;
+        }
+        /// <summary>
+        /// Get cart item from database using web API.
+        /// </summary>
+        public async Task<List<CartOrWishListProduct>> GetCartOrFavItemAsync(int userId, int carttype)
+        {
+            List<CartOrWishListProduct> UserCarts = new List<CartOrWishListProduct>();
+            var usercart = new
+            {
+                userid = userId,
+                carttype = carttype
+
+            };
+            try
+            {
+                string serializeusercart = JsonConvert.SerializeObject(usercart);
+                StringContent formatedserializedusercart = new StringContent(serializeusercart, Encoding.UTF8, "application/json");
+                UriBuilder uri = new UriBuilder($"{App.BaseUri}cart/getcartitem");
+
+                HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), formatedserializedusercart);
+                
+                if (response != null && response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    if (result != null)
+                    {
+                        List<CartOrWishListProductEntity> userCartEntity = JsonConvert.DeserializeObject<List<CartOrWishListProductEntity>>(result);
+                        if (userCartEntity != null && userCartEntity.Count > 0)
+                        {
+                            UserCarts = Mapper.Map<List<CartOrWishListProductEntity>, List<CartOrWishListProduct>>(userCartEntity);
+                        }
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return UserCarts;
+        }
+
+
+
+        public async Task<List<CartOrWishListProduct>> GetOrderedItemsAsync(int userId)
+        {
+            List<CartOrWishListProduct> UserCarts = new List<CartOrWishListProduct>();
+            try
+            {
+                var userobj = new
+                {
+                    UserId = userId
+                };
+                string seialuser = JsonConvert.SerializeObject(userobj);
+                StringContent strinuserobj = new StringContent(seialuser, Encoding.UTF8, "application/json");
+                UriBuilder uri = new UriBuilder($"{App.BaseUri}checkout/myorders");
+                
+                HttpResponseMessage response = await httpClient.PostAsync(uri.ToString(), strinuserobj);
+                if (response != null && response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    if (result != null)
+                    {
+                        List<CartOrWishListProductEntity> userCartEntity = JsonConvert.DeserializeObject<List<CartOrWishListProductEntity>>(result);
+                        if (userCartEntity != null && userCartEntity.Count > 0)
+                        {
+                            UserCarts = Mapper.Map<List<CartOrWishListProductEntity>, List<CartOrWishListProduct>>(userCartEntity);
+                        }
+                    }
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return UserCarts;
+        }
+
+    }
+}

@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentView
+    x:Class="habahabamall.Views.Transaction.PaymentView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:habahabamall.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:converter="clr-namespace:habahabamall.Converters" 
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:control="clr-namespace:habahabamall.Controls"
+    xmlns:templateSelector="clr-namespace:habahabamall.Helpers" xmlns:local="clr-namespace:habahabamall" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms" xmlns:svg="clr-namespace:Xamarin.Forms.Svg;assembly=SvgImageSource"
+    x:Name="paymentView"
+    BackgroundColor="{DynamicResource Gray-White}">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+    <!--  Template for Saved card payment mode  -->
+            <DataTemplate x:Key="CardTemplate">
+                <Grid ColumnSpacing="0" RowSpacing="0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition x:Name="cvvRow" Height="Auto" />
+                        <RowDefinition Height="16" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <buttons:SfRadioButton
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Margin="8,12,8,2"
+                        GroupKey="{StaticResource PaymentOptionGroup}"
+                        HeightRequest="20"
+                        HorizontalOptions="FillAndExpand"
+                        Style="{StaticResource RadioButtonStyle}"
+                        Text="{Binding PaymentMode}" />
+
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        templateSelector:RTLHelper.Margin="42,0,0,0"
+                        FontFamily="{StaticResource Montserrat-Medium}"
+                        FontSize="12"
+                        HorizontalOptions="StartAndExpand"
+                        Text="{Binding CardNumber}"
+                        TextColor="{DynamicResource Gray-700}" />
+
+                    <border:SfBorder
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Padding="{OnPlatform Default='12,0',
+                                             iOS='12,8'}"
+                        templateSelector:RTLHelper.Margin="42,8,16,0"
+                        BorderColor="{DynamicResource Gray-300}"
+                        CornerRadius="4">
+                        <control:BorderlessEntry
+                            FontFamily="{StaticResource Montserrat-Regular}"
+                            FontSize="16"
+                            HeightRequest="{OnPlatform Default=40,
+                                                       iOS=-1}"
+                            HorizontalOptions="Start"
+                            IsPassword="True"
+                            Keyboard="Numeric"
+                            MaxLength="3"
+                            Placeholder="CVV"
+                            PlaceholderColor="{DynamicResource Gray-700}"
+                            TextColor="{DynamicResource Gray-700}"
+                            WidthRequest="100">
+                            <control:BorderlessEntry.Behaviors>
+                                <behavior:BorderlessEntryCVVBehavior />
+                            </control:BorderlessEntry.Behaviors>
+                        </control:BorderlessEntry>
+
+                    </border:SfBorder>
+
+                    <Image
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="0,0,0,0"
+                        HeightRequest="45"
+                        HorizontalOptions="StartAndExpand"
+                        Source="{Binding CardTypeIcon}"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="45" />
+
+                    <!--  Separator  -->
+                    <BoxView
+                        Grid.Row="3"
+                        Grid.ColumnSpan="2"
+                        HeightRequest="1"
+                        Style="{StaticResource BoxViewStyle}"
+                        VerticalOptions="End" />
+
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding BindingContext.PaymentOptionCommand, Source={x:Reference PaymentGroup}}"
+                            CommandParameter="{x:Reference cvvRow}" />
+                    </Grid.GestureRecognizers>
+
+                </Grid>
+            </DataTemplate>
+           
+            <!--  Template for other payment mode  -->
+            <DataTemplate x:Key="CommonTemplate">
+                <Grid ColumnSpacing="0" RowSpacing="0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                    </Grid.RowDefinitions>
+
+                    <buttons:SfRadioButton
+                        Grid.Row="0"
+                        Margin="8,12,8,0"
+                        x:Name="PayOption"
+                        IsChecked="{Binding BindingContext.IsPaymentChecked,Source={x:Reference PaymentGroup}}"
+                        GroupKey="{StaticResource PaymentOptionGroup}"
+                        HeightRequest="20"
+                        FontSize="12"
+                        HorizontalOptions="FillAndExpand"
+                        Style="{StaticResource RadioButtonStyle}"
+                        Text="{Binding PaymentMode}" >
+                        
+                        <buttons:SfRadioButton.Behaviors>
+                            <behavior:EventToCommandBehavior
+                                             EventName="StateChanged"
+                                             Command="{Binding BindingContext.PaymentOptionCommand,Source={x:Reference PaymentGroup}}"
+                                             CommandParameter="{x:Reference PayOption}"/>
+                        </buttons:SfRadioButton.Behaviors>
+
+                    </buttons:SfRadioButton>
+
+                    <Image
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="8,12,8,0"
+                        Aspect="AspectFill"
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        
+                        VerticalOptions="Center"
+                        WidthRequest="100" >
+                        <Image.Source>
+                            <svg:SvgImageSource Source="{Binding CardTypeIcon}"  Width="40" Height="50" />
+                        </Image.Source>
+                    </Image>
+
+                    <!--  Separator  -->
+                    <BoxView
+                        Grid.Row="1"
+                        HeightRequest="1"
+                        Style="{StaticResource BoxViewStyle}"
+                        VerticalOptions="End" />
+
+                   <!-- <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding BindingContext.PaymentOptionCommand, Source={x:Reference PaymentGroup}}"
+                            CommandParameter="{x:Reference PayOption}"/>
+                        
+                    </Grid.GestureRecognizers>
+-->
+
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <StackLayout
+        BackgroundColor="{DynamicResource Gray-White}"
+        Spacing="0"
+        VerticalOptions="Start">
+
+        <!--  Header  -->
+        <Label
+            Margin="16"
+            FontFamily="{StaticResource Montserrat-SemiBold}"
+            FontSize="16"
+            LineHeight="{OnPlatform Android=1.25,
+                                    Default=-1}"
+            Style="{StaticResource PriceLabelStyle}"
+            Text="Payment Option"
+            TextColor="{DynamicResource Gray-900}" />
+
+       
+
+        <!--  Separator  -->
+        <BoxView HeightRequest="1" Style="{StaticResource BoxViewStyle}" />
+
+        <!--  Payment modes  -->
+        <buttons:SfRadioGroup x:Name="PaymentGroup" BindableLayout.ItemsSource="{Binding PaymentModes}" Spacing="0">
+            <BindableLayout.ItemTemplateSelector>
+                <templateSelector:PaymentTemplateSelector CardTemplate="{StaticResource CardTemplate}"
+                                                          CommonTemplate="{StaticResource CommonTemplate}" />
+            </BindableLayout.ItemTemplateSelector>
+        </buttons:SfRadioGroup>
+        
+        <busyindicator:SfBusyIndicator
+                x:Name="busyindicator"
+                AnimationType="SlicedCircle"
+                IsVisible="{Binding IsBusy}"
+                IsBusy="{Binding IsBusy}"
+                InputTransparent="False"
+                TextColor="{DynamicResource PrimaryColor}"
+                ViewBoxHeight="50"
+                ViewBoxWidth="50" />
+    </StackLayout>
+
+</ContentView>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:behaviors="clr-namespace:Corcav.Behaviors;assembly=Corcav.Behaviors"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms" 
+             xmlns:transaction="clr-namespace:habahabamall.ViewModels.Transaction" 
+             x:DataType="transaction:CheckoutPageViewModel"
+             x:Class="habahabamall.Views.Transaction.Modal">
+    <ContentPage.Content>
+        <StackLayout                
+                Margin="{core:OnPlatformOrientationThickness PhonePortrait='20,32',
+                                                             PhoneLandscape='150,32',
+                                                             TabletPortrait='200,50',
+                                                             TabletLandscape='300,50',
+                                                             Desktop='30'}"
+                Spacing="0"
+                VerticalOptions="FillAndExpand"
+                WidthRequest="{OnPlatform Default='-1',
+                                          UWP='350'}">
+            <StackLayout>
+                <Label 
+                    x:Name="title"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+
+                <WebView 
+                    
+                    Navigating="webaddress_Navigating"
+                    x:Name="webaddress"
+                            HeightRequest="1000" 
+                                 WidthRequest="1000">
+                </WebView> 
+                    
+                             
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

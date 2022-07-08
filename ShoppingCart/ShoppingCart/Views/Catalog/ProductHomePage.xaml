@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="habahabamall.Views.Catalog.ProductHomePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:habahabamall.Behaviors"
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:control="clr-namespace:habahabamall.Controls"
+    xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:contentpage="http://xamarin.com/schemas/2014/forms"
+    xmlns:rotator="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+    xmlns:local="clr-namespace:habahabamall.ViewModels.Catalog" xmlns:behavior1="clr-namespace:habahabamall.Behaviors.Catalog"
+    x:Name="productHomePage"
+    ios:Page.UseSafeArea="true"
+    BackgroundColor="{DynamicResource Gray-White}"
+    mc:Ignorable="d">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+             
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+    
+    <ContentPage.BindingContext>
+        <local:ProductHomePageViewModel x:Name="inlineModel" />
+    </ContentPage.BindingContext>
+    
+    <contentpage:ContentPage.Behaviors>
+        <behavior:CatalogueFilter/>
+    </contentpage:ContentPage.Behaviors>
+
+    <ContentPage.Content>
+        
+            <StackLayout>
+                <control:TitleView
+                        Title="habahabamall"
+                    HorizontalOptions="CenterAndExpand"
+                        BackgroundColor="{DynamicResource FacebookBlue}">
+                    <control:TitleView.LeadingView>
+                        <buttons:SfButton
+                                x:Name="masterPageOpenButton"
+                                BackgroundColor="AliceBlue"
+                                Command="{Binding MasterPageOpenCommand}"
+                                CommandParameter="{x:Reference masterPageOpenButton}"
+                                FontFamily="{StaticResource FontIcons}"
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="&#xe72e;"
+                                TextColor="{DynamicResource Gray-600}"
+                                 
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center"
+                                WidthRequest="50" />
+                    </control:TitleView.LeadingView>
+                </control:TitleView>
+
+                <!--Home products search field-->
+                <SearchBar 
+                    x:Name="prodfilterText" 
+                    Placeholder="Search here to filter" 
+                    BackgroundColor="#E9E9E9"
+                    IsVisible="{Binding IsRecentProductExists}"/>
+
+
+
+                    <syncfusion:SfListView
+                        x:Name="productsmainlist"
+                        AutoFitMode="DynamicHeight"
+                        Margin="8,0,8,32"
+                        Padding="0"
+                        ColumnSpacing="0"
+                        IsScrollBarVisible="False"
+                        IsScrollingEnabled="False"
+                        FocusBorderColor="Transparent"
+                        IsVisible="{Binding IsRecentProductExists}"
+                        ItemsSource="{Binding RecommendedProducts}"
+                        RowSpacing="0"
+                        IsStickyGroupHeader="False"
+                        SelectionBackgroundColor="Transparent">
+
+                        <syncfusion:SfListView.Behaviors>
+                            <behavior:SfListViewTapBehavior Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference productHomePage}}" />
+                        </syncfusion:SfListView.Behaviors>
+
+                <syncfusion:SfListView.HeaderTemplate>
+                    <DataTemplate>
+                        <rotator:SfRotator 
+                         x:Name="featuredrotator"
+                         IsVisible="{Binding IsFeaturedExists}"
+                        NavigationDelay="3000" 
+                        ItemsSource="{Binding Path=NewArrivalProducts, Source={x:Reference inlineModel}}" 
+                        NavigationDirection="Horizontal"
+                        HeightRequest="200"
+                        EnableAutoPlay="True"
+                        DotPlacement="None"
+                        EnableLooping="True"
+                        BackgroundColor="#ececec">
+
+                            <rotator:SfRotator.Behaviors>
+                                <behavior1:FeatureRotator />
+                            </rotator:SfRotator.Behaviors>
+
+                            <rotator:SfRotator.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnSpacing="0" RowSpacing="0" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+
+                                        <StackLayout 
+                                            Grid.Row="0"
+                                                 Grid.Column="2"
+                                            >
+                                            <!--featured product name -->
+                                            <Label  Text="{Binding Pname, Mode=TwoWay}" 
+                                                TextColor="Black"
+                                                FontSize="Medium"
+                                                />
+
+                                            <!--featured product price-->
+                                            <Label 
+                                                   FontSize="Medium"
+                                       TextColor="{DynamicResource PrimaryColor}" >
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding  Currency }"  />
+                                                        <Span Text="{Binding  Price, StringFormat=' {0:0 }'}" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </StackLayout>
+                                        <!--featured product image-->
+                                        <Image  
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                               Margin="0,0,0,16"
+                                            Aspect="AspectFit"
+                                            BackgroundColor="{DynamicResource Gray-White}"
+                                            HeightRequest="180"
+                                            
+                                            Source="{Binding Previewimage}"
+                                            VerticalOptions="Center"
+                                          />
+                                    </Grid>
+                                </DataTemplate>
+                            </rotator:SfRotator.ItemTemplate>
+                        </rotator:SfRotator>
+
+                    </DataTemplate>
+                </syncfusion:SfListView.HeaderTemplate>
+                        <syncfusion:SfListView.ItemTemplate>
+                            <DataTemplate>
+
+                                <!--  Frame to have rounded corners  -->
+                                <control:CustomShadowFrame
+                                    Margin="8"
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    BorderColor="White"
+                                    CornerRadius="4"
+                                    HasShadow="true"
+                                    HeightRequest="380"
+                                    WidthRequest="230">
+
+
+
+                                    <StackLayout
+                                        Margin="0"
+                                        Padding="0"
+                                        HorizontalOptions="FillAndExpand"
+                                        Spacing="0"
+                                        VerticalOptions="FillAndExpand">
+
+                                        <!--  Product image  -->
+
+                                        <Image
+                                            Margin="0,0,0,16"
+                                            Aspect="AspectFit"
+                                            BackgroundColor="{DynamicResource Gray-200}"
+                                            HeightRequest="150"
+                                            HorizontalOptions="Center"
+                                            Source="{Binding Previewimage}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="150" />
+
+                                        <!--  Product name  -->
+                                        <Label
+                                            Margin="16,0"
+                                            FontFamily="{StaticResource Montserrat-SemiBold}"
+                                            FontSize="16"
+                                            HorizontalOptions="StartAndExpand"
+                                            LineHeight="{OnPlatform Android=1.25,
+                                                                    Default=-1}"
+                                            Text="{Binding Pname}"
+                                            TextColor="{DynamicResource Gray-900}" />
+
+                                        <!--  Product Description  -->
+                                        <Label
+                                            Margin="16,4"
+                                            FontFamily="{StaticResource Montserrat-Medium}"
+                                            FontSize="12"
+                                            HorizontalOptions="StartAndExpand"
+                                            LineHeight="1.25"
+                                            MaxLines="3"
+                                            Text="{Binding ShortDescription}"
+                                            TextColor="{DynamicResource Gray-700}"
+                                            TextType="Html"/>
+
+                                        <!--  Employee name  -->
+                                        <StackLayout
+                                            Margin="16,4,16,16"
+                                            Orientation="Vertical"
+                                            Spacing="2">
+
+                                            <!--  Product Price  -->
+                                    <Label
+                                                FontFamily="{StaticResource Montserrat-SemiBold}"
+                                                FontSize="{OnIdiom Default=20,
+                                                                   Desktop=24}"
+                                                Style="{StaticResource LabelStyle}"
+                                                TextColor="{DynamicResource PrimaryColor}" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding  Currency }"  />
+                                                <Span Text="{Binding  Price, StringFormat=' {0:0 }'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label
+                                                FontFamily="{DynamicResource Montserrat-Medium}"
+                                                FontSize="12"
+                                                IsVisible="{Binding IsDiscountPositive}"
+                                                Style="{StaticResource LabelStyle}"
+                                                TextDecorations="Strikethrough"
+                                                VerticalTextAlignment="Center" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding  Currency }"  />
+                                                <Span Text="{Binding  OldPrice, StringFormat=' {0:0 }'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label
+                                                FontFamily="{DynamicResource Montserrat-Medium}"
+                                                FontSize="12"
+                                                IsVisible="{Binding IsDiscountPositive}"
+                                                Style="{StaticResource LabelStyle}"
+                                                Text="{Binding DiscountPrice, StringFormat=' ({0}% OFF)'}"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+
+                                        </StackLayout>
+
+                                    </StackLayout>
+                                </control:CustomShadowFrame>
+                            </DataTemplate>
+                        </syncfusion:SfListView.ItemTemplate>
+                        <syncfusion:SfListView.LayoutManager>
+                            <listView:GridLayout SpanCount="2" />
+                        </syncfusion:SfListView.LayoutManager>
+
+                    </syncfusion:SfListView>
+               
+            <busyindicator:SfBusyIndicator
+                x:Name="busyindicator"
+                AnimationType="SlicedCircle"
+                IsBusy="{Binding IsBusy}"
+                TextColor="{DynamicResource PrimaryColor}"
+                ViewBoxHeight="50"
+                ViewBoxWidth="50" />
+        </StackLayout>
+            
+    </ContentPage.Content>
+</ContentPage>

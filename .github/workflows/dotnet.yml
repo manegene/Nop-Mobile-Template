@@ -20,4 +20,4 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: msbuild ShoppingCart\ShoppingCart.Android\habahabamall.Android.csproj /p:Configuration=Debug
+      run: msbuild ShoppingCart\ShoppingCart.Android\ t/habahabamall.Android.csproj /p:Configuration=Debug

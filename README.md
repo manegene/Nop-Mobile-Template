@@ -1,6 +1,13 @@
-# ShoppingCart
+# This is a working Xamarin forms e-commerce Android & IoS mobile template developed on top of Syncfusion's E-cart sample. You can customize the app and use it for your ecommerce store. Incase you use nopCommerce, there is an API solution already existing- please reach out. Otherwise, you need to develop your API and update the endoints to conform to your API endpoints.
+The main purpose of this project is to lessen the development time for anyone looking for  a mobile solution to their e-commerce store.
+The template is designed to use a secure endpoint(firebase secured) with data persistence
  
 The Shopping Cart is an online shopping application developed using [Syncfusion’s Xamarin UI controls](https://www.syncfusion.com/xamarin-ui-controls) and  [Essential UI Kit](https://github.com/syncfusion/essential-ui-kit-for-xamarin.forms) on the Xamarin.Forms platform.
+
+## working complete application [Playstore](https://play.google.com/store/apps/details?id=com.habahabamall.ShoppingCartApp)
+
+## [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=XMQSX7J83V5AN)
+ 
 
 ## Features integrated 
 

@@ -6,7 +6,7 @@ The Shopping Cart is an online shopping application developed using [Syncfusionâ
 
 ## working complete application [Playstore](https://play.google.com/store/apps/details?id=com.habahabamall.ShoppingCartApp)
 
-## [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=XMQSX7J83V5AN)
+## Sponsor this project:  [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=XMQSX7J83V5AN)
  
 
 ## Features integrated 

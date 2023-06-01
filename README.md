@@ -1,8 +1,8 @@
-# This is a working Xamarin forms e-commerce Android & IoS mobile template developed on top of Syncfusion's E-cart sample. You are free to customize the application and use it for your ecommerce store. Incase you use nopCommerce, there is an API solution already existing- please reach out. Otherwise, you need to develop your API and update the endpoints to conform to your API endpoints. This projects aims at reducing the development time for anyone looking for  a mobile solution to their e-commerce store. It is designed to use a secure API endpoint(firebase secured) with data persistence
+## This is a working Xamarin forms e-commerce Android & IoS mobile template developed on top of Syncfusion's E-cart sample. You are free to customize the application and use it for your ecommerce store. Incase you use nopCommerce, there is an API solution already existing- please reach out. Otherwise, you need to develop your API and update the endpoints to conform to your API endpoints. This projects aims at reducing the development time for anyone looking for  a mobile solution to their e-commerce store. It is designed to use a secure API endpoint(firebase secured) with data persistence
  
-## working complete application [Playstore](https://play.google.com/store/apps/details?id=com.habahabamall.ShoppingCartApp)
+### working complete application [Playstore](https://play.google.com/store/apps/details?id=com.habahabamall.ShoppingCartApp)
 
-## Sponsor this project with your donation:  [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=XMQSX7J83V5AN)
+### Sponsor this project with your donation:  [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=XMQSX7J83V5AN)
  
 
 ## Features integrated 
